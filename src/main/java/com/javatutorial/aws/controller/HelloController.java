@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @GetMapping("/")
     public String hello() {
-        return "Hey Roshan...Good Job!";
+        return "Hello from EC2.This is running using Elastic IP.";
     }
 
     @GetMapping("/health")
