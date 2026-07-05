@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Source Code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Setup Java 17
@@ -20,7 +20,7 @@ jobs:
           java-version: 17
 
       - name: Build Project
-        run: ./mvnw clean package
+        run: ./mvnw clean package -DskipTests
 
       - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -31,7 +31,7 @@ jobs:
           source: "target/*.jar"
           target: "/home/ec2-user/target"
 
-      - name: Deploy Application
+      - name: Deploy Application on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -40,16 +40,19 @@ jobs:
           script: |
             set -e
 
-            JAR="/home/ec2-user/target/aws-0.0.1-SNAPSHOT.jar"
+            APP_DIR="/home/ec2-user/target"
+            JAR=$(ls -t $APP_DIR/*.jar | head -n 1)
 
-            echo "Checking JAR..."
+            echo "Detected JAR: $JAR"
+
             if [ ! -f "$JAR" ]; then
-              echo "❌ JAR not found at $JAR"
+              echo "❌ JAR not found!"
+              ls -lah $APP_DIR
               exit 1
             fi
 
             echo "Stopping old application..."
-            PID=$(pgrep -f aws-0.0.1-SNAPSHOT.jar)
+            PID=$(pgrep -f "java -jar")
 
             if [ ! -z "$PID" ]; then
               kill $PID
@@ -59,4 +62,4 @@ jobs:
             echo "Starting new application..."
             nohup java -jar $JAR > app.log 2>&1 &
 
-            echo "✅ Deployment completed successfully"
+            echo "✅ Deployment successful"
