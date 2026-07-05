@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @GetMapping("/")
     public String hello() {
-        return "Hello AWS. How you doing?🚀. My name is Roshan & I'm a Software Developer";
+        return "Hey Roshan...Good Job!";
     }
 
     @GetMapping("/health")
