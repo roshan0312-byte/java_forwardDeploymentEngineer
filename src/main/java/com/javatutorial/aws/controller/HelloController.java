@@ -10,8 +10,8 @@ public class HelloController {
         return "Hello from EC2.This is running using Elastic IP.";
     }
 
-    @GetMapping("/health")
+    @GetMapping("/intro")
     public String health() {
-        return "This app is healthy currently";
+        return "This is Roshan Shaw";
     }
 }
