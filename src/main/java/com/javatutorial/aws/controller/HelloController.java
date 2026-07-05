@@ -14,4 +14,7 @@ public class HelloController {
     public String health() {
         return "Application is Running";
     }
+
+    @GetMapping("/intro")
+    public String myName() {return "Hello Roshan Shaw";}
 }
