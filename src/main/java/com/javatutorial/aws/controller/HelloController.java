@@ -12,6 +12,6 @@ public class HelloController {
 
     @GetMapping("/health")
     public String health() {
-        return "Application is Running";
+        return "This app is healthy currently";
     }
 }
