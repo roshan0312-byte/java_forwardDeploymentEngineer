@@ -2,23 +2,24 @@ name: Deploy Spring Boot to EC2
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: '17'
 
-      - name: Build with Maven
+      - name: Build Project
         run: mvn clean package -DskipTests
 
       - name: Copy JAR to EC2
@@ -27,16 +28,16 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: "target/*.jar"
-          target: "/home/ec2-user/target/"
+          source: "target/aws-0.0.1-SNAPSHOT.jar"
+          target: "/home/ec2-user/"
 
-      - name: Restart Spring Boot App
+      - name: Deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            sudo systemctl daemon-reload
+            mv /home/ec2-user/target/aws-0.0.1-SNAPSHOT.jar /home/ec2-user/aws-0.0.1-SNAPSHOT.jar
             sudo systemctl restart springboot
-            sudo systemctl status springboot
+            sudo systemctl status springboot --no-pager
