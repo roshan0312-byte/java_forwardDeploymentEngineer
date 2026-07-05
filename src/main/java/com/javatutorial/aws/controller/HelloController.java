@@ -7,14 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @GetMapping("/")
     public String hello() {
-        return "Hello AWS. How you doing?🚀";
+        return "Hello AWS. How you doing?🚀. My name is Roshan & I'm a Software Developer";
     }
 
     @GetMapping("/health")
     public String health() {
         return "Application is Running";
     }
-
-    @GetMapping("/intro")
-    public String myName() {return "Hello Roshan Shaw";}
 }
