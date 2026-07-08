@@ -11,4 +11,9 @@ public class HelloController {
     public String hello() {
         return "Hello Docker CI/CD V2 and we are ready to GO!";
     }
+
+    @GetMapping("/")
+    public String intro() {
+        return "I' Roshan Shaw. A Senior Self-Driven Forward Deployed Engineer!";
+    }
 }
