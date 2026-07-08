@@ -9,6 +9,6 @@ public class HelloController {
 
     @GetMapping("/")
     public String hello() {
-        return "Hello Docker!";
+        return "Hello Docker CI/CD V2";
     }
 }
